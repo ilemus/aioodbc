@@ -15,7 +15,7 @@ aioodbc
     :alt: Chat on Gitter
 
 **aioodbc** is a Python 3.7+ module that enables access to ODBC_ databases
-with asyncio_. It relies on the pyodbc_ library and preserves its look and
+with asyncio_. It relies on the awesome pyodbc_ library and preserves its look and
 feel. Internally, *aioodbc* uses threads to avoid blocking the event loop.
 threads_ aren't as bad as you might think! Other drivers like motor_ use the
 same approach.
@@ -28,7 +28,7 @@ Basic Example
 -------------
 
 **aioodbc** is based on pyodbc_ and provides the same API. You just need
-to use ``await conn.f()`` instead of ``conn.f()``.
+to use ``yield from conn.f()`` or ``await conn.f()`` instead of ``conn.f()``.
 
 Properties are unchanged, so ``conn.prop`` is correct, as is
 ``conn.prop = val``.
@@ -120,12 +120,12 @@ Installation
 ------------
 
 In a Linux environment, pyodbc_ (hence *aioodbc*) requires the unixODBC_ library.
-You can install it using your package manager, for example:
+You can install it using your package manager, for example::
 
       $ sudo apt-get install unixodbc
       $ sudo apt-get install unixodbc-dev
 
-Then:
+Then::
 
    pip install aioodbc
 
@@ -133,7 +133,7 @@ Then:
 Run tests
 ---------
 
-To run tests locally without Docker, install `unixodbc` and the `sqlite` driver:
+To run tests locally without Docker, install `unixodbc` and the `sqlite` driver::
 
       $ sudo apt-get install unixodbc
       $ sudo apt-get install libsqliteodbc
@@ -142,7 +142,7 @@ Create a virtual environment and install the package with requirements:
 
       $ pip install -r requirements-dev.txt
 
-Run tests, linters, etc.:
+Run tests, linters, etc.::
 
       $ make fmt
       $ make lint
