@@ -127,6 +127,15 @@ async def test_rollback(conn):
 
 @pytest.mark.parametrize("db", pytest.db_list)
 @pytest.mark.asyncio
+async def test_setencoding_setdecoding(conn):
+    result = await conn.setencoding("utf-8")
+    assert result is None
+    result = await conn.setdecoding(pyodbc.SQL_CHAR, encoding="utf-8")
+    assert result is None
+
+
+@pytest.mark.parametrize("db", pytest.db_list)
+@pytest.mark.asyncio
 async def test_custom_executor(dsn, executor):
     conn = await aioodbc.connect(dsn=dsn, executor=executor)
     assert conn._executor is executor

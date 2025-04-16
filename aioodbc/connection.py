@@ -3,7 +3,8 @@ import sys
 import traceback
 import warnings
 from functools import partial
-
+from concurrent.futures import Future
+from typing import Optional
 import pyodbc
 
 from .cursor import Cursor
@@ -34,12 +35,12 @@ class Connection:
     def __init__(
         self,
         *,
-        dsn,
-        autocommit=False,
-        ansi=None,
-        timeout=0,
+        dsn: str,
+        autocommit: Optional[bool] = False,
+        ansi: bool | None = None,
+        timeout: Optional[int] = 0,
         executor=None,
-        echo=False,
+        echo: Optional[bool] = False,
         loop=None,  # deprecated
         after_created=None,
         **kwargs,
@@ -62,7 +63,7 @@ class Connection:
         if self._loop.get_debug():
             self._source_traceback = traceback.extract_stack(sys._getframe(1))
 
-    def _execute(self, func, *args, **kwargs):
+    def _execute(self, func, *args, **kwargs) -> Future:
         # execute function with args and kwargs in thread pool
         func = partial(func, *args, **kwargs)
         future = self._loop.run_in_executor(self._executor, func)
@@ -119,7 +120,7 @@ class Connection:
     def echo(self) -> bool:
         return self._echo
 
-    async def _cursor(self):
+    async def _cursor(self) -> Cursor:
         c = await self._execute(self._conn.cursor)
         self._last_usage = self._loop.time()
         connection = self
@@ -172,7 +173,7 @@ class Connection:
                 await self.close()
             raise
 
-    def getinfo(self, type_):
+    def getinfo(self, type_) -> Future:
         """Returns general information about the driver and data source
         associated with a connection by calling SQLGetInfo and returning its
         results. See Microsoft's SQLGetInfo documentation for the types of
@@ -183,7 +184,7 @@ class Connection:
         fut = self._execute(self._conn.getinfo, type_)
         return fut
 
-    def add_output_converter(self, sqltype, func):
+    def add_output_converter(self, sqltype, func) -> Future:
         """Register an output converter function that will be called whenever
         a value with the given SQL type is read from the database.
 
@@ -199,14 +200,34 @@ class Connection:
         fut = self._execute(self._conn.add_output_converter, sqltype, func)
         return fut
 
-    def clear_output_converters(self):
+    def clear_output_converters(self) -> Future:
         """Remove all output converter functions added by
         add_output_converter.
         """
         fut = self._execute(self._conn.clear_output_converters)
         return fut
 
-    def set_attr(self, attr_id, value):
+    def setdecoding(
+        self, sqltype: int, encoding: str | None = None, ctype: int | None = None
+    ) -> Future:
+        """Set the decoding for the connection.
+
+        :param encoding: str, encoding name
+        """
+        fut = self._execute(
+            self._conn.setdecoding, sqltype, encoding=encoding, ctype=ctype
+        )
+        return fut
+
+    def setencoding(self, encoding: str) -> Future:
+        """Set the encoding for the connection.
+
+        :param encoding: str, encoding name
+        """
+        fut = self._execute(self._conn.setencoding, encoding)
+        return fut
+
+    def set_attr(self, attr_id, value) -> Future:
         """Calls SQLSetConnectAttr with the given values.
 
         :param attr_id: the attribute ID (integer) to set. These are ODBC or
