@@ -41,8 +41,8 @@ RUN pip install -e /aioodbc/ && \
     pip install -r /aioodbc/requirements-dev.txt
 
 # with --squash option in docker build, this will reduce the final image size a bit.
-# RUN rm -rf /aioodbc && \
-#     apt-get purge -y g++ && \
-#     apt-get purge -y wget && \
-#     apt-get autoremove -y
+RUN rm -rf /aioodbc && \
+    apt-get purge -y g++ && \
+    apt-get purge -y wget && \
+    apt-get autoremove -y
 
