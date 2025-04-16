@@ -1,5 +1,6 @@
 aioodbc
 =======
+
 .. image:: https://github.com/aio-libs/aioodbc/workflows/CI/badge.svg
    :target: https://github.com/aio-libs/aioodbc/actions?query=workflow%3ACI
    :alt: GitHub Actions status for master branch
@@ -13,23 +14,23 @@ aioodbc
     :target: https://gitter.im/aio-libs/Lobby
     :alt: Chat on Gitter
 
-**aioodbc** is a Python 3.7+ module that makes it possible to access ODBC_ databases
-with asyncio_. It relies on the awesome pyodbc_ library and preserves the same look and
-feel. Internally *aioodbc* employs threads to avoid blocking the event loop,
-threads_ are not that as bad as you think!. Other drivers like motor_ use the
+**aioodbc** is a Python 3.7+ module that enables access to ODBC_ databases
+with asyncio_. It relies on the pyodbc_ library and preserves its look and
+feel. Internally, *aioodbc* uses threads to avoid blocking the event loop.
+threads_ aren't as bad as you might think! Other drivers like motor_ use the
 same approach.
 
 **aioodbc** is fully compatible and tested with uvloop_. Take a look at the test
-suite, all tests are executed with both the default event loop and uvloop_.
+suite; all tests are executed with both the default event loop and uvloop_.
 
 
 Basic Example
 -------------
 
-**aioodbc** is based on pyodbc_ and provides the same api, you just need
-to use  ``yield from conn.f()`` or ``await conn.f()`` instead of ``conn.f()``
+**aioodbc** is based on pyodbc_ and provides the same API. You just need
+to use ``await conn.f()`` instead of ``conn.f()``.
 
-Properties are unchanged, so ``conn.prop`` is correct as well as
+Properties are unchanged, so ``conn.prop`` is correct, as is
 ``conn.prop = val``.
 
 
@@ -59,6 +60,7 @@ Properties are unchanged, so ``conn.prop`` is correct as well as
 
 Connection Pool
 ---------------
+
 Connection pooling is ported from aiopg_ and relies on PEP492_ features:
 
 .. code:: python
@@ -88,7 +90,8 @@ Connection pooling is ported from aiopg_ and relies on PEP492_ features:
 
 Context Managers
 ----------------
-`Pool`, `Connection` and `Cursor` objects support the context management
+
+`Pool`, `Connection`, and `Cursor` objects support the context management
 protocol:
 
 .. code:: python
@@ -116,29 +119,30 @@ protocol:
 Installation
 ------------
 
-In a linux environment pyodbc_ (hence *aioodbc*) requires the unixODBC_ library.
-You can install it using your package manager, for example::
+In a Linux environment, pyodbc_ (hence *aioodbc*) requires the unixODBC_ library.
+You can install it using your package manager, for example:
 
       $ sudo apt-get install unixodbc
       $ sudo apt-get install unixodbc-dev
 
-Then::
+Then:
 
    pip install aioodbc
 
 
 Run tests
 ---------
-To run tests locally without docker, install `unixodbc` and `sqlite` driver::
+
+To run tests locally without Docker, install `unixodbc` and the `sqlite` driver:
 
       $ sudo apt-get install unixodbc
       $ sudo apt-get install libsqliteodbc
 
-Create virtualenv and install package with requirements::
+Create a virtual environment and install the package with requirements:
 
       $ pip install -r requirements-dev.txt
 
-Run tests, lints etc::
+Run tests, linters, etc.:
 
       $ make fmt
       $ make lint
@@ -149,7 +153,7 @@ Other SQL Drivers
 -----------------
 
 * aiopg_ - asyncio client for PostgreSQL
-* aiomysql_ - asyncio client form MySQL
+* aiomysql_ - asyncio client for MySQL
 
 
 Requirements

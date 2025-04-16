@@ -27,7 +27,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 ADD . /aioodbc
-RUN ls -la /aioodbc
 WORKDIR /aioodbc
 
 RUN pip install -e /aioodbc/ && \
